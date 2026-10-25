@@ -3,9 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Double Shop - แบบฟอร์มสั่งซื้อสินค้า</title>
+    <title>Double Shop - SHOP & CUTE GOODS</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#ff4d4d',
+                            700: '#e11d48',
+                            800: '#9f1239',
+                        },
+                        flame: {
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Noto Sans Lao & Thai Fonts -->
@@ -15,39 +41,60 @@
     <style>
         body {
             font-family: 'Kanit', 'Noto Sans Lao', sans-serif;
-            background-color: #f8fafc;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff0f3 50%, #ffeef2 100%);
+            background-attachment: fixed;
         }
         input, select, textarea {
             font-size: 16px !important;
         }
         .animate-pop {
-            animation: pop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         @keyframes pop {
-            0% { transform: scale(0.95); opacity: 0; }
+            0% { transform: scale(0.92); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .glass-header {
+            background: rgba(255, 77, 77, 0.92);
+            backdrop-filter: blur(10px);
+        }
+        .sparkle-bg {
+            background-image: radial-gradient(#ff8585 0.75px, transparent 0.75px), radial-gradient(#ff8585 0.75px, #fff5f5 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.3;
         }
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #fff0f3;
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: #fda4af;
             border-radius: 4px;
         }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen pb-12 antialiased">
+<body class="text-slate-800 min-h-screen pb-12 antialiased relative">
+
+    <!-- Background Decorative Bubbles -->
+    <div class="fixed inset-0 sparkle-bg pointer-events-none z-0"></div>
+    <div class="fixed top-10 -left-10 w-72 h-72 bg-rose-300/30 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed bottom-20 -right-10 w-80 h-80 bg-orange-300/30 rounded-full blur-3xl pointer-events-none"></div>
 
     <!-- LOGIN MODAL / POPUP -->
-    <div id="login-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-6 max-w-md w-full animate-pop shadow-2xl border border-slate-100">
+    <div id="login-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white/95 rounded-3xl p-6 max-w-md w-full animate-pop shadow-2xl border border-rose-100">
             <div class="text-center mb-5">
-                <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-sm mb-2">
-                    <i class="fas fa-user-check"></i>
+                <div class="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center mx-auto shadow-sm mb-2 border border-rose-100">
+                    <i class="fas fa-heart text-brand-600 text-2xl animate-pulse"></i>
                 </div>
                 <h3 class="text-xl font-bold text-slate-800">เข้าสู่ระบบ / ข้อมูลผู้รับ</h3>
                 <p class="text-xs text-slate-500 mt-1">กรอกข้อมูลเพื่อใช้ในการจัดส่งอัตโนมัติ (ไม่ต้องพิมพ์ซ้ำ)</p>
@@ -57,8 +104,8 @@
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">ชื่อ - นามสกุล ผู้รับ <span class="text-rose-500">*</span></label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="far fa-user text-base"></i></span>
-                        <input type="text" id="login-name" required placeholder="ป้อนชื่อ-นามสกุลผู้รับ" class="w-full pl-10 pr-3.5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none transition text-base">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-rose-400"><i class="far fa-user text-base"></i></span>
+                        <input type="text" id="login-name" required placeholder="ป้อนชื่อ-นามสกุลผู้รับ" class="w-full pl-10 pr-3.5 py-3 bg-rose-50/50 border border-rose-200/80 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none transition text-base">
                     </div>
                 </div>
 
@@ -67,8 +114,8 @@
                         เบอร์โทรศัพท์ติดต่อ <span class="text-rose-500">*</span>
                     </label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fas fa-phone-alt text-sm"></i></span>
-                        <input type="tel" id="login-phone" required placeholder="เช่น 0201234567" class="w-full pl-10 pr-3.5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none transition text-base">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-rose-400"><i class="fas fa-phone-alt text-sm"></i></span>
+                        <input type="tel" id="login-phone" required placeholder="เช่น 0201234567" class="w-full pl-10 pr-3.5 py-3 bg-rose-50/50 border border-rose-200/80 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none transition text-base">
                     </div>
                 </div>
 
@@ -76,7 +123,7 @@
                     <label class="block font-semibold text-slate-700 mb-1">
                         บริษัทขนส่ง <span class="text-rose-500">*</span>
                     </label>
-                    <select id="login-transport" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-semibold text-slate-700 text-base">
+                    <select id="login-transport" class="w-full p-3 bg-rose-50/50 border border-rose-200/80 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none font-semibold text-slate-700 text-base">
                         <option value="ອານຸສິດ">🚚 ອານຸສິດ (Anousith)</option>
                         <option value="ຮຸ່ງອາລຸ່ນ">🚚 ຮຸ່ງອາລຸ່ນ (HAL Logistics)</option>
                     </select>
@@ -87,13 +134,13 @@
                         สาขาใกล้บ้าน <span class="text-rose-500">*</span>
                     </label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fas fa-map-marker-alt text-base"></i></span>
-                        <input type="text" id="login-branch" required placeholder="ระบุสาขาใกล้บ้านของคุณ" class="w-full pl-10 pr-3.5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none transition text-base">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-rose-400"><i class="fas fa-map-marker-alt text-base"></i></span>
+                        <input type="text" id="login-branch" required placeholder="ระบุสาขาใกล้บ้านของคุณ" class="w-full pl-10 pr-3.5 py-3 bg-rose-50/50 border border-rose-200/80 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none transition text-base">
                     </div>
                 </div>
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/30 text-base transition">
+                    <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-flame-500 hover:from-brand-500 hover:to-flame-400 active:scale-[0.98] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-rose-500/30 text-base transition">
                         บันทึกข้อมูลเข้าสู่ระบบ
                     </button>
                 </div>
@@ -102,24 +149,24 @@
     </div>
 
     <!-- TOP NAVIGATION BAR -->
-    <header class="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white sticky top-0 z-40 shadow-lg">
-        <div class="max-w-md mx-auto px-4 py-3.5 flex items-center justify-between">
+    <header class="glass-header text-white sticky top-0 z-40 shadow-md border-b border-white/20">
+        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="bg-white/20 p-2 rounded-2xl w-11 h-11 flex items-center justify-center font-bold text-amber-300 text-xl border border-white/30 shadow-inner">
-                    <i class="fas fa-shopping-bag"></i>
+                <div class="bg-white/95 p-1 rounded-2xl w-11 h-11 flex items-center justify-center shadow-md border border-rose-200 shrink-0">
+                    <img src="https://i.ibb.co/8g8dP49T/IMG-3221.jpg" alt="Double Shop Logo" class="w-full h-full object-contain rounded-xl">
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg leading-tight tracking-wide flex items-center gap-1.5">
-                        Double Shop
+                    <h1 class="font-black text-lg leading-tight tracking-wide flex items-center gap-1 text-white">
+                        Double Shop <i class="fas fa-fire text-amber-300 text-xs"></i>
                     </h1>
-                    <p class="text-xs text-emerald-100 font-light">สั่งซื้อง่าย ส่งไว ได้ของชัวร์</p>
+                    <p class="text-[11px] text-rose-100 font-light tracking-wide">SHOP & CUTE GOODS</p>
                 </div>
             </div>
             <div class="flex items-center gap-1.5">
-                <button onclick="openLoginModal()" class="text-xs bg-white/20 hover:bg-white/30 active:scale-95 text-white font-medium px-2.5 py-1.5 rounded-xl border border-white/30 transition flex items-center gap-1">
-                    <i class="fas fa-user text-xs"></i> <span id="nav-user-name">ล็อกอิน</span>
+                <button onclick="openLoginModal()" class="text-xs bg-white/20 hover:bg-white/30 active:scale-95 text-white font-medium px-3 py-1.5 rounded-full border border-white/30 transition flex items-center gap-1 shadow-sm">
+                    <i class="fas fa-user-circle text-sm"></i> <span id="nav-user-name">ล็อกอิน</span>
                 </button>
-                <button onclick="resetCart()" class="text-xs bg-white/15 hover:bg-white/25 active:scale-95 text-white font-medium px-2.5 py-1.5 rounded-xl border border-white/20 transition flex items-center gap-1">
+                <button onclick="resetCart()" class="text-xs bg-black/15 hover:bg-black/25 active:scale-95 text-white font-medium px-2.5 py-1.5 rounded-full border border-white/20 transition flex items-center gap-1">
                     <i class="fas fa-rotate-left text-xs"></i> ล้าง
                 </button>
             </div>
@@ -127,129 +174,153 @@
     </header>
 
     <!-- STOREFRONT & ORDER FORM -->
-    <main class="max-w-md mx-auto px-4 pt-4 space-y-4">
+    <main class="max-w-md mx-auto px-4 pt-4 space-y-4 relative z-10">
 
-        <!-- Banner Alert -->
-        <div class="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-3.5 flex items-center gap-3 text-sm text-emerald-900 shadow-sm">
-            <div class="bg-emerald-600 text-white w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                <i class="fas fa-store text-base"></i>
+        <!-- Banner Card with Logo & Welcome -->
+        <div class="bg-gradient-to-r from-rose-500 via-brand-600 to-flame-500 text-white rounded-3xl p-4 shadow-xl border border-white/30 relative overflow-hidden">
+            <div class="absolute -right-4 -bottom-6 opacity-20 pointer-events-none">
+                <img src="https://i.ibb.co/8g8dP49T/IMG-3221.jpg" alt="Watermark Logo" class="w-40 h-40 object-contain">
             </div>
-            <p class="leading-relaxed">ยินดีต้อนรับสู่ <b class="text-emerald-700">Double Shop</b> ทางร้านเราเป็นระบบสั่งซื้อแบบปิดมิดชิดสามารถวางใจและสั่งซื้อได้เลย</p>
+            <div class="flex items-center gap-3.5 relative z-10">
+                <div class="bg-white p-1.5 rounded-2xl w-14 h-14 shrink-0 shadow-lg border border-rose-100">
+                    <img src="https://i.ibb.co/8g8dP49T/IMG-3221.jpg" alt="Double Shop Logo" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="bg-amber-300 text-slate-900 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider mb-1 inline-block">Official Store</span>
+                    <h2 class="font-bold text-base leading-snug">ยินดีต้อนรับสู่ Double Shop</h2>
+                    <p class="text-xs text-rose-100 mt-0.5 font-light">สินค้าลายน่ารัก คุณภาพดี จัดส่งไว ชำระเงินง่ายดาย ✨</p>
+                </div>
+            </div>
         </div>
 
         <!-- Step 1: Select Products -->
-        <section class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
-            <div class="flex items-center justify-between mb-3.5 border-b pb-2.5">
+        <section class="glass-card rounded-3xl p-4 shadow-lg">
+            <div class="flex items-center justify-between mb-3 border-b border-rose-100 pb-2.5">
                 <h2 class="font-bold text-slate-800 flex items-center text-base">
-                    <span class="bg-emerald-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 font-bold shadow-sm">1</span>
+                    <span class="bg-gradient-to-r from-brand-600 to-flame-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 font-bold shadow-sm">1</span>
                     เลือกรายการสินค้า
                 </h2>
-                <div class="flex items-center gap-2">
-                    <span id="cart-item-count" class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full border border-emerald-200">
-                        เลือกแล้ว 0 รายการ
+                <span id="cart-item-count" class="text-xs bg-rose-100 text-brand-800 font-bold px-2.5 py-1 rounded-full border border-rose-200">
+                    เลือกแล้ว 0 รายการ
+                </span>
+            </div>
+
+            <!-- SEARCH & FILTER BAR -->
+            <div class="mb-3 flex items-center gap-2">
+                <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-rose-400">
+                        <i class="fas fa-search text-xs"></i>
                     </span>
+                    <input type="text" id="search-input" oninput="filterProducts()" placeholder="ค้นหาสินค้า..." class="w-full pl-8 pr-3 py-2 bg-white/80 border border-rose-200/80 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
                 </div>
+                <button onclick="toggleInStockOnly()" id="btn-filter-stock" class="text-xs px-3 py-2 bg-white/80 border border-rose-200/80 text-slate-600 rounded-xl font-medium flex items-center gap-1 hover:bg-rose-50 transition">
+                    <i class="fas fa-box text-rose-400"></i> พร้อมส่ง
+                </button>
             </div>
 
             <!-- Product List Grid -->
             <div id="product-list" class="space-y-3">
                 <div class="text-center py-6 text-slate-400 text-sm">
-                    <i class="fas fa-spinner fa-spin text-emerald-600 text-xl mb-2"></i>
+                    <i class="fas fa-spinner fa-spin text-brand-600 text-xl mb-2"></i>
                     <p>กำลังโหลดข้อมูลสต็อกล่าสุด...</p>
                 </div>
             </div>
         </section>
 
         <!-- Step 2: Customer Details -->
-        <section class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
-            <div class="flex items-center justify-between mb-3.5 border-b pb-2.5">
+        <section class="glass-card rounded-3xl p-4 shadow-lg">
+            <div class="flex items-center justify-between mb-3.5 border-b border-rose-100 pb-2.5">
                 <h2 class="font-bold text-slate-800 flex items-center text-base">
-                    <span class="bg-emerald-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 font-bold shadow-sm">2</span>
+                    <span class="bg-gradient-to-r from-brand-600 to-flame-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 font-bold shadow-sm">2</span>
                     ข้อมูลจัดส่งสินค้า
                 </h2>
-                <button onclick="openLoginModal()" class="text-xs text-emerald-600 hover:text-emerald-700 font-bold flex items-center gap-1">
+                <button onclick="openLoginModal()" class="text-xs text-brand-600 hover:text-brand-700 font-bold flex items-center gap-1">
                     <i class="fas fa-pen-to-square"></i> แก้ไขข้อมูล
                 </button>
             </div>
 
-            <div class="space-y-4 text-sm">
+            <div class="space-y-3.5 text-sm">
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">ชื่อ - นามสกุล ผู้รับ <span class="text-rose-500">*</span></label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="far fa-user text-base"></i></span>
-                        <input type="text" id="cust-name" required placeholder="ป้อนชื่อ-นามสกุลผู้รับ" class="w-full pl-10 pr-3.5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none transition text-base">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-rose-400"><i class="far fa-user text-base"></i></span>
+                        <input type="text" id="cust-name" required placeholder="ป้อนชื่อ-นามสกุลผู้รับ" class="w-full pl-10 pr-3.5 py-3 bg-white/80 border border-rose-200/80 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none transition text-base">
                     </div>
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">
                         เบอร์โทรศัพท์ติดต่อ <span class="text-rose-500">*</span> 
-                        <span class="text-xs text-rose-600 font-normal ml-1">(กรุณาใส่เบอร์โทรให้ถูกต้อง)</span>
+                        <span class="text-xs text-rose-600 font-normal ml-1">(ระบุเบอร์ให้ถูกต้อง)</span>
                     </label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fas fa-phone-alt text-sm"></i></span>
-                        <input type="tel" id="cust-phone" required placeholder="เช่น 0201234567" class="w-full pl-10 pr-3.5 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none transition text-base">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-rose-400"><i class="fas fa-phone-alt text-sm"></i></span>
+                        <input type="tel" id="cust-phone" required placeholder="เช่น 0201234567" class="w-full pl-10 pr-3.5 py-3 bg-white/80 border border-rose-200/80 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none transition text-base">
                     </div>
                 </div>
 
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">
                         บริษัทขนส่ง / สาขาผู้รับ <span class="text-rose-500">*</span> 
-                        <span class="text-xs text-rose-600 font-normal ml-1">(ระบุสาขาให้ถูกต้องสาขาใกล้บ้าน)</span>
+                        <span class="text-xs text-rose-600 font-normal ml-1">(ระบุสาขาใกล้บ้าน)</span>
                     </label>
                     <div class="grid grid-cols-1 gap-2.5">
-                        <select id="transport-select" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none font-semibold text-slate-700 text-base">
+                        <select id="transport-select" class="w-full p-3 bg-white/80 border border-rose-200/80 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none font-semibold text-slate-700 text-base">
                             <option value="ອານຸສິດ">🚚 ອານຸສິດ (Anousith)</option>
                             <option value="ຮຸ່ງອາລຸ່ນ">🚚 ຮຸ່ງອາລຸ່ນ (HAL Logistics)</option>
                         </select>
-                        <input type="text" id="cust-branch" required placeholder="ระบุสาขา ให้ถูกต้องสาขาใกล้บ้าน" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none transition text-base">
+                        <input type="text" id="cust-branch" required placeholder="ระบุสาขา ให้ถูกต้องสาขาใกล้บ้าน" class="w-full p-3 bg-white/80 border border-rose-200/80 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none transition text-base">
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Step 3: Payment & QR Code Section -->
-        <section class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80">
-            <div class="flex items-center justify-between mb-3 border-b pb-2.5">
+        <section class="glass-card rounded-3xl p-4 shadow-lg">
+            <div class="flex items-center justify-between mb-3 border-b border-rose-100 pb-2.5">
                 <h2 class="font-bold text-slate-800 flex items-center text-base">
-                    <span class="bg-emerald-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 font-bold shadow-sm">3</span>
+                    <span class="bg-gradient-to-r from-brand-600 to-flame-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 font-bold shadow-sm">3</span>
                     ชำระเงินสแกน QR Code
                 </h2>
-                <span class="text-xs text-red-600 font-bold flex items-center gap-1">
+                <span class="text-xs text-red-600 font-bold flex items-center gap-1 bg-red-50 px-2 py-0.5 rounded-md border border-red-200">
                     <i class="fas fa-qrcode"></i> BCEL OnePay
                 </span>
             </div>
 
             <!-- Full-width QR Code Box -->
-            <div class="bg-slate-50 p-4 rounded-2xl text-center border border-slate-200 mb-3">
-                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 w-full max-w-xs mx-auto">
+            <div class="bg-gradient-to-b from-rose-50 to-orange-50/50 p-4 rounded-2xl text-center border border-rose-200/80 mb-3 relative">
+                <div class="bg-white p-3 rounded-2xl shadow-md border border-rose-100 w-full max-w-xs mx-auto">
                     <img id="qr-code-img" src="https://i.ibb.co/cSxgv31j/IMG-2918.png" alt="BCEL OnePay QR Code" class="w-full h-auto mx-auto rounded-xl object-contain shadow-sm">
-                    <p class="text-xs text-slate-600 mt-2 font-bold">บัญชีผู้รับ: ⭐ Double Shop ⭐</p>
+                    <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-center gap-1.5">
+                        <img src="https://i.ibb.co/8g8dP49T/IMG-3221.jpg" alt="Mini Logo" class="w-5 h-5 object-contain rounded-full">
+                        <p class="text-xs text-slate-700 font-bold">บัญชีผู้รับ: ⭐ Double Shop ⭐</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-amber-50/90 border border-amber-300 rounded-2xl p-3.5 text-xs font-semibold leading-relaxed flex items-start gap-2.5 shadow-sm">
+            <div class="bg-amber-50/90 border border-amber-300/80 rounded-2xl p-3.5 text-xs font-semibold leading-relaxed flex items-start gap-2.5 shadow-sm">
                 <i class="fas fa-exclamation-triangle text-amber-500 text-base mt-0.5 shrink-0"></i>
                 <div class="text-slate-800">
-                    <span class="text-amber-700 font-bold">ถ้าลูกค้าเลือกสินค้าครบแล้วกรุณาสแกนจ่ายตามยอดรวมจำนวนเงิน ถ้าลูกค้าชำระเงินแล้ว </span>
-                    <span class="text-rose-600 font-extrabold">กรุณาบันทึก หรือ แคปสลิปการโอนไว้ ถ้าไม่มีสลิปการโอนเราจะไม่จัดส่งสินค้าเด็ดขาดเมื่อเข้าไปในwhatsappแล้วกรุณาสงสลิปการโอนเงีนให้ทาง admin เพื่อตรวจสอบ</span>
+                    <span class="text-amber-800 font-bold">เมื่อเลือกรวมสินค้าแล้วกรุณาสแกนจ่ายตามยอดรวม </span>
+                    <span class="text-rose-600 font-extrabold">กรุณาบันทึก/แคปสลิปไว้ทุกครั้ง หากไม่มีสลิปทางร้านจะไม่จัดส่งสินค้าเด็ดขาด เมื่อเข้า WhatsApp แล้วกรุณาส่งสลิปให้แอดมินเพื่อตรวจสอบครับ</span>
                 </div>
             </div>
         </section>
 
         <!-- Grand Total Section -->
-        <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4 rounded-2xl shadow-lg border border-slate-700/50">
+        <section class="bg-gradient-to-r from-slate-900 via-slate-800 to-rose-950 text-white p-4.5 rounded-3xl shadow-xl border border-rose-500/30">
             <div class="flex justify-between items-center">
                 <div>
-                    <span class="text-base font-bold text-emerald-400 block tracking-wide">ยอดรวมทั้งสิ้น</span>
+                    <span class="text-xs font-medium text-rose-300 uppercase tracking-wider block">Total Amount</span>
+                    <span class="text-base font-bold text-white block">ยอดรวมทั้งสิ้น</span>
                 </div>
-                <span id="grand-total-text" class="text-2xl font-black text-emerald-400 tracking-tight">0 ₭</span>
+                <span id="grand-total-text" class="text-2xl font-black text-amber-300 tracking-tight drop-shadow-sm">0 ₭</span>
             </div>
         </section>
 
         <!-- Submit & Actions -->
         <div class="space-y-2 pt-1">
-            <button id="btn-submit" onclick="submitOrder()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-2xl shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2.5 text-base transition transform active:scale-[0.98]">
+            <button id="btn-submit" onclick="submitOrder()" class="w-full bg-gradient-to-r from-brand-600 via-rose-500 to-flame-500 hover:from-brand-500 hover:to-flame-400 active:scale-[0.98] text-white font-bold py-4 px-4 rounded-2xl shadow-xl shadow-rose-500/30 flex items-center justify-center gap-2.5 text-base transition transform">
                 <i class="fab fa-whatsapp text-2xl"></i>
                 <span>ส่งข้อมูลให้ร้านค้าเพื่อจัดส่ง</span>
             </button>
@@ -258,9 +329,9 @@
     </main>
 
     <!-- Modal Success Action -->
-    <div id="action-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-5 max-w-sm w-full text-center space-y-4 animate-pop shadow-2xl border border-slate-100">
-            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl shadow-sm">
+    <div id="action-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white/95 rounded-3xl p-5 max-w-sm w-full text-center space-y-4 animate-pop shadow-2xl border border-rose-100">
+            <div class="w-16 h-16 bg-rose-100 text-brand-600 rounded-full flex items-center justify-center mx-auto text-2xl shadow-sm">
                 <i class="fas fa-check-circle"></i>
             </div>
             <div>
@@ -269,8 +340,8 @@
             </div>
             
             <div class="space-y-2.5 text-xs text-left">
-                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-emerald-800 font-medium leading-relaxed flex items-start gap-2.5 shadow-sm">
-                    <i class="fas fa-info-circle text-emerald-600 text-base mt-0.5 shrink-0"></i>
+                <div class="bg-rose-50 border border-rose-200 rounded-2xl p-3 text-rose-900 font-medium leading-relaxed flex items-start gap-2.5 shadow-sm">
+                    <i class="fas fa-info-circle text-brand-600 text-base mt-0.5 shrink-0"></i>
                     <span>เมื่อกดปุ่มด้านล่าง ระบบจะเชื่อมต่อไปยังแชต <b>WhatsApp</b> ของทางร้านโดยอัตโนมัติ</span>
                 </div>
 
@@ -281,7 +352,7 @@
             </div>
 
             <div class="space-y-2 pt-1">
-                <a id="modal-whatsapp-link" href="#" target="_blank" onclick="closeActionModal()" class="block w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-600/30 text-sm transition">
+                <a id="modal-whatsapp-link" href="#" target="_blank" onclick="closeActionModal()" class="block w-full bg-gradient-to-r from-brand-600 to-flame-500 hover:from-brand-500 hover:to-flame-400 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-rose-500/30 text-sm transition">
                     <i class="fab fa-whatsapp text-lg mr-1.5 align-middle"></i> เปิดแชต WhatsApp ตอนนี้
                 </a>
                 <button onclick="closeActionModal()" class="w-full text-xs text-slate-400 py-1.5 hover:text-slate-600 transition">
@@ -293,7 +364,7 @@
 
     <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white text-xs px-4 py-2.5 rounded-full shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center gap-2 border border-slate-700">
-        <i id="toast-icon" class="fas fa-info-circle text-emerald-400"></i>
+        <i id="toast-icon" class="fas fa-info-circle text-rose-400"></i>
         <span id="toast-msg">แจ้งเตือน</span>
     </div>
 
@@ -302,35 +373,32 @@
         const SHOP_NAME = "Double Shop";
         const WA_PHONE = "8562092424648";
         
-        // ** Web App URL ของคุณ **
         const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxVvBrpY7NyCLgskllOwXmmxg8isJJeqbzEQ_b9vioMOCIRxl0HYq8fY0kTsEXzUwSLUQ/exec';
 
-        // สินค้าเริ่มต้น
+        let showOnlyInStock = false;
+
         let products = [
-            { id: 1, name: "001.สีแดง.52", price: 55000, image: "https://i.ibb.co/fzcdMCVd/ff84fd2b-2fa8-4c93-8078-ad4e989ed6f6.jpg", qty: 0, stock: 0 },
-            { id: 2, name: "001.สีดำ.52", price: 55000, image: "https://i.ibb.co/BHCwgddC/c29631e3-310d-41de-9843-cdcfe623144f.jpg", qty: 0, stock: 0 },
-            { id: 3, name: "สินค้าที่ 3", price: 10000, image: "", qty: 0, stock: 0 },
-            { id: 4, name: "สินค้าที่ 4", price: 10000, image: "", qty: 0, stock: 0 },
-            { id: 5, name: "สินค้าที่ 5", price: 10000, image: "", qty: 0, stock: 0 },
-            { id: 6, name: "สินค้าที่ 6", price: 10000, image: "", qty: 0, stock: 0 },
-            { id: 7, name: "สินค้าที่ 7", price: 10000, image: "", qty: 0, stock: 0 },
-            { id: 8, name: "สินค้าที่ 8", price: 10000, image: "", qty: 0, stock: 0 },
-            { id: 9, name: "สินค้าที่ 9", price: 10000, image: "", qty: 0, stock: 0 },
-            { id: 10, name: "สินค้าที่ 10", price: 10000, image: "", qty: 0, stock: 0 }
+            { id: 1, name: "สินค้าที่ 1", price: 10000, image: "https://i.ibb.co/fzcdMCVd/ff84fd2b-2fa8-4c93-8078-ad4e989ed6f6.jpg", qty: 0, stock: 0 },
+            { id: 2, name: "สินค้าที่ 2", price: 15000, image: "https://i.ibb.co/BHCwgddC/c29631e3-310d-41de-9843-cdcfe623144f.jpg", qty: 0, stock: 0 },
+            { id: 3, name: "สินค้าที่ 3", price: 20000, image: "", qty: 0, stock: 0 },
+            { id: 4, name: "สินค้าที่ 4", price: 25000, image: "", qty: 0, stock: 0 },
+            { id: 5, name: "สินค้าที่ 5", price: 30000, image: "", qty: 0, stock: 0 },
+            { id: 6, name: "สินค้าที่ 6", price: 35000, image: "", qty: 0, stock: 0 },
+            { id: 7, name: "สินค้าที่ 7", price: 40000, image: "", qty: 0, stock: 0 },
+            { id: 8, name: "สินค้าที่ 8", price: 45000, image: "", qty: 0, stock: 0 },
+            { id: 9, name: "สินค้าที่ 9", price: 50000, image: "", qty: 0, stock: 0 },
+            { id: 10, name: "สินค้าที่ 10", price: 55000, image: "", qty: 0, stock: 0 }
         ];
 
-        // --- ระบบ LOGIN & USER PROFILE ---
         function checkUserProfile() {
             const profile = localStorage.getItem('double_shop_user');
             if (profile) {
                 const user = JSON.parse(profile);
-                // นำข้อมูลไปใส่ในหน้าสั่งซื้อแบบอัตโนมัติ
                 document.getElementById('cust-name').value = user.name || '';
                 document.getElementById('cust-phone').value = user.phone || '';
                 document.getElementById('transport-select').value = user.transport || 'ອານຸສິດ';
                 document.getElementById('cust-branch').value = user.branch || '';
 
-                // นำข้อมูลไปใส่ใน modal ล็อกอินเพื่อเตรียมแก้ไข
                 document.getElementById('login-name').value = user.name || '';
                 document.getElementById('login-phone').value = user.phone || '';
                 document.getElementById('login-transport').value = user.transport || 'ອານຸສິດ';
@@ -357,7 +425,6 @@
             const userData = { name, phone, transport, branch };
             localStorage.setItem('double_shop_user', JSON.stringify(userData));
 
-            // เติมข้อมูลเข้าแบบฟอร์มจัดส่งทันที
             document.getElementById('cust-name').value = name;
             document.getElementById('cust-phone').value = phone;
             document.getElementById('transport-select').value = transport;
@@ -376,7 +443,6 @@
             document.getElementById('login-modal').classList.add('hidden');
         }
 
-        // 1. ดึงข้อมูลสต็อกสินค้าล่าสุดมาจาก Google Sheets
         async function fetchStockFromSheet() {
             try {
                 const response = await fetch(GOOGLE_SHEET_URL);
@@ -403,39 +469,76 @@
             return new Intl.NumberFormat('th-TH').format(amount) + " ₭";
         }
 
-        // 2. แสดงผลรายการสินค้าพร้อมตัวเลขสต็อกคงเหลือ
+        function filterProducts() {
+            renderProducts();
+        }
+
+        function toggleInStockOnly() {
+            showOnlyInStock = !showOnlyInStock;
+            const btn = document.getElementById('btn-filter-stock');
+            if (showOnlyInStock) {
+                btn.classList.add('bg-rose-500', 'text-white');
+                btn.classList.remove('bg-white/80', 'text-slate-600');
+            } else {
+                btn.classList.remove('bg-rose-500', 'text-white');
+                btn.classList.add('bg-white/80', 'text-slate-600');
+            }
+            renderProducts();
+        }
+
         function renderProducts() {
             const container = document.getElementById('product-list');
+            const searchQuery = (document.getElementById('search-input')?.value || '').toLowerCase();
             container.innerHTML = '';
 
             let totalSelectedItems = 0;
 
-            products.forEach(p => {
-                const item = document.createElement('div');
+            const filteredProducts = products.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery);
+                const matchesStock = showOnlyInStock ? p.stock > 0 : true;
+                return matchesSearch && matchesStock;
+            });
+
+            if (filteredProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-slate-400 text-xs">
+                        <i class="fas fa-search-minus text-2xl text-rose-300 mb-2 block"></i>
+                        ไม่พบรายการสินค้าที่ค้นหา
+                    </div>
+                `;
+                return;
+            }
+
+            filteredProducts.forEach(p => {
                 const isSelected = p.qty > 0;
                 if (isSelected) totalSelectedItems += p.qty;
 
                 const isOutOfStock = p.stock <= 0;
 
-                item.className = `p-3 rounded-2xl border transition flex items-center justify-between ${
-                    isOutOfStock ? 'bg-slate-100/80 border-slate-200 opacity-60' : (isSelected ? 'bg-emerald-50/70 border-emerald-300 shadow-sm' : 'bg-slate-50 border-slate-200')
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-2xl border transition-all duration-200 flex items-center justify-between ${
+                    isOutOfStock 
+                        ? 'bg-slate-100/70 border-slate-200 opacity-60' 
+                        : (isSelected 
+                            ? 'bg-rose-50/90 border-rose-300 shadow-md ring-1 ring-rose-300' 
+                            : 'bg-white/80 border-rose-100 hover:border-rose-200 hover:shadow-sm')
                 }`;
 
                 const defaultImg = "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=300&q=80";
                 const imgSrc = p.image && p.image.trim() !== "" ? p.image : defaultImg;
 
-                let stockBadge = `<span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md">คงเหลือ ${p.stock} ชิ้น</span>`;
+                let stockBadge = `<span class="text-[11px] bg-rose-100 text-brand-800 font-bold px-2 py-0.5 rounded-md border border-rose-200">คงเหลือ ${p.stock} ชิ้น</span>`;
                 if (isOutOfStock) {
-                    stockBadge = `<span class="text-xs bg-rose-100 text-rose-700 font-bold px-2 py-0.5 rounded-md">สินค้าหมด</span>`;
+                    stockBadge = `<span class="text-[11px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-md">สินค้าหมด</span>`;
                 }
 
                 item.innerHTML = `
-                    <div class="flex items-center gap-3.5">
-                        <img src="${imgSrc}" onerror="this.src='${defaultImg}'" class="w-20 h-20 rounded-2xl object-cover border border-slate-200 shadow-sm shrink-0">
+                    <div class="flex items-center gap-3">
+                        <img src="${imgSrc}" onerror="this.src='${defaultImg}'" class="w-16 h-16 rounded-xl object-cover border border-rose-100 shadow-sm shrink-0">
                         <div>
                             <h3 class="font-bold text-sm text-slate-800 leading-snug">${p.name}</h3>
-                            <div class="mt-1 flex items-center gap-2">
-                                <span class="text-sm font-black text-emerald-600">${formatKip(p.price)}</span>
+                            <div class="mt-0.5 flex items-center gap-2">
+                                <span class="text-sm font-black text-brand-600">${formatKip(p.price)}</span>
                             </div>
                             <div class="mt-1">
                                 ${stockBadge}
@@ -444,10 +547,10 @@
                     </div>
                     
                     <div>
-                        <div class="flex items-center gap-2 bg-white rounded-xl p-1.5 border border-slate-200 shadow-sm">
-                            <button onclick="updateQty(${p.id}, -1)" ${isOutOfStock ? 'disabled' : ''} class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-90 text-slate-700 font-bold text-base flex items-center justify-center transition disabled:opacity-30">-</button>
-                            <span class="w-6 text-center font-extrabold text-sm text-slate-800">${p.qty}</span>
-                            <button onclick="updateQty(${p.id}, 1)" ${isOutOfStock ? 'disabled' : ''} class="w-8 h-8 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:scale-90 text-white font-bold text-base flex items-center justify-center transition disabled:opacity-30">+</button>
+                        <div class="flex items-center gap-1.5 bg-rose-50/80 rounded-xl p-1 border border-rose-200/80 shadow-sm">
+                            <button onclick="updateQty(${p.id}, -1)" ${isOutOfStock ? 'disabled' : ''} class="w-7 h-7 rounded-lg bg-white hover:bg-rose-100 active:scale-90 text-slate-700 font-bold text-sm flex items-center justify-center transition disabled:opacity-30 border border-rose-100">-</button>
+                            <span class="w-5 text-center font-extrabold text-xs text-slate-800">${p.qty}</span>
+                            <button onclick="updateQty(${p.id}, 1)" ${isOutOfStock ? 'disabled' : ''} class="w-7 h-7 rounded-lg bg-gradient-to-r from-brand-600 to-flame-500 hover:from-brand-500 hover:to-flame-400 active:scale-90 text-white font-bold text-sm flex items-center justify-center transition disabled:opacity-30 shadow-sm">+</button>
                         </div>
                     </div>
                 `;
@@ -484,7 +587,6 @@
             return grandTotal;
         }
 
-        // 3. ส่งข้อมูลตัดสต็อกไปที่ Google Sheets และอัปเดตหน้าเว็บทันที
         async function submitOrder() {
             const name = document.getElementById('cust-name').value.trim();
             const phone = document.getElementById('cust-phone').value.trim();
@@ -509,7 +611,6 @@
             btnSubmit.disabled = true;
             btnSubmit.innerHTML = `<i class="fas fa-spinner fa-spin text-xl"></i> <span>กำลังบันทึกและตัดสต็อก...</span>`;
 
-            // ส่งข้อมูลสั่งซื้อตัดสต็อกทีละรายการ
             for (const item of selectedProducts) {
                 const payload = {
                     product_id: item.id,
@@ -595,7 +696,7 @@
             const toastIcon = document.getElementById('toast-icon');
 
             toastMsg.innerText = msg;
-            toastIcon.className = `fas ${icon} text-emerald-400`;
+            toastIcon.className = `fas ${icon} text-rose-400`;
 
             toast.classList.remove('opacity-0', 'pointer-events-none');
             toast.classList.add('opacity-100');
